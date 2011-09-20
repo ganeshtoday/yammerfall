@@ -1,0 +1,49 @@
+<script id="messageTemplate" type="text/x-jquery-tmpl">
+
+  <div class="yam" style="display:none" >
+    
+    <div class="userimg">
+      <img src="${mugshot_url}" height="60" width="60"/>
+    </div>
+    
+    <div class="content">
+    
+      <div class="sender">
+  			${full_name}
+  			{{if replied_to_id}}
+    			<span class="in_reply_to">in reply to ${in_reply_to}</span>
+  			{{/if}}
+  		</div>
+  		
+		
+    	<div class="message">
+  			${body.plain}
+  			{{if attachments}}
+  			  <div class="attachments">
+  				{{each(index, attachment) attachments}}
+  					{{if attachment.image}}
+    					<img class="attachment" src="${attachment.image.url}">
+  					{{/if}}
+  				{{/each}}
+  				</div>
+  			{{/if}}
+  		</div>
+		
+		  <div class="metadata">
+    		<span class="creationdate unformatted">${created_at}</span>
+    		<span class="messageinfo"> from ${client_type}</span>
+    	</div>
+		
+		  <!--{{if liked_by.count}}
+		    <div class="likedby">
+  				<img src="images/smiley.png" class="smiley">&nbsp;&nbsp;${liked_by_text}
+  				{{if liked_by.count > 1}}like{{else}}likes{{/if}}
+    			this post.
+  		  </div>
+  		{{/if}}-->
+
+	  </div>
+	  
+  </div>
+
+</script>
