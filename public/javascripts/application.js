@@ -173,6 +173,7 @@ function formatCreationDates() {
 	});
 }
 
+//Settings dialog methods
 function prepareSettingsDialog() {
 	//Load group options
 	yam.request({
@@ -185,7 +186,7 @@ function prepareSettingsDialog() {
 
 $.fn.addItems = function(data) {
 	var list = this[0];
-	list.options.add(new Option("", -1));
+	list.options.add(new Option("All Conversations", -1));
 	$.each(data, function(index, itemData) {
 		list.options.add(new Option(itemData.full_name, itemData.id));
 	});
@@ -197,7 +198,6 @@ function isInt(x) {
    return x==y && x.toString()==y.toString(); 
 }
 
-//Settings dialog methods
 /*function updateTips( t ) {
 	tips.text( t ).addClass( "ui-state-highlight" );
 	setTimeout(function() {
