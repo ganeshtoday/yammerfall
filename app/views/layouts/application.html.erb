@@ -71,6 +71,7 @@
       if (response.authResponse) {     
         login();
       } else {
+		$('#landing').removeClass('hidden');
         yam.connect.loginButton('#yammer-login', function (response) {
           if (response.authResponse) {
             login();
