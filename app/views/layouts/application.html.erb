@@ -98,6 +98,11 @@
             //bValid = bValid && checkBothNotFilled(group, topic);
             if ( bValid ) {
   					  $.cookie('groupId', group.val());
+					  if (group.val() != -1) {
+					  	$.cookie('filterName', $('#group option:selected').text());
+					  } else {
+						$.cookie('filterName', null);
+					  }
   					  //if (topic.val().length > 0) {
   					  //  $.cookie('topic', topic.val());
   					  //}

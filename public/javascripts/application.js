@@ -60,6 +60,8 @@ function retrieveInitialFeed() {
 	$('#feed').html("");
 
 	var groupId = $.cookie('groupId');
+	$('#feed-filter').html($.cookie('filterName'));
+
 	//var topicId = $.cookie('topicId');
 	if (groupId!=null && isInt(groupId) && groupId !=-1) {
 		//Load group feed
