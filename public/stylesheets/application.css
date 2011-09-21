@@ -285,9 +285,13 @@ div.likedby .smiley{
 /* Settings dialog styles */
 #settings-dialog .validateTips { border: 1px solid transparent; padding: 0.3em; }
 #settings-dialog label {padding-right: 0.4em;}
-#settings-dialog input.text, #settings-dialog select { margin-bottom:12px; width:300px; padding: .4em; }
+#settings-dialog select { margin-bottom:12px; width:300px; padding: .4em; }
+#settings-dialog input.text { margin-bottom:12px; width:150px; padding: .4em; }
 #settings-dialog fieldset { padding: 0.3em; border:0; margin-top:25px; }
 .ui-dialog .ui-state-error { padding: 0.3em; }
+#settings-dialog #colorpicker { padding-left: 30px; }
+#settings-dialog #logoUrl {width: 290px; padding-top: 5px; }
+#settings-dialog .instructions {margin-left: 53px; font-size: 75%; }
 		
 
 

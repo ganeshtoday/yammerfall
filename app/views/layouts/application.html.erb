@@ -22,7 +22,7 @@
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory: mathiasbynens.be/notes/touch-icons -->
 
   <!-- CSS: implied media="all" -->
-  <%= stylesheet_link_tag "application", "jquery-ui", "1140", "1140_ie", :media => "all" %>
+  <%= stylesheet_link_tag "application", "jquery-ui", "1140", "1140_ie", "farbtastic", :media => "all" %>
 
   <!-- More ideas for your <head> here: h5bp.com/docs/#head-Tips -->
 
@@ -81,41 +81,69 @@
     });
     
     //Settings dialog code
-    $(function(){
-      var group = $('#group'),
-        //topic = $('#topic'),
-  			allFields = $( [] ).add( group )/*.add( topic )*/,
-  			tips = $('.validateTips');
+    $(document).ready(function(){
+		var group = $('#group'),
+		//topic = $('#topic'),
+			logoUrl = $('#logoUrl'),
+			color = $('#color'),
+			allFields = $( [] ).add( group )/*.add( topic )*/.add( logoUrl ).add( color ),
+			tips = $('.validateTips');
+
+		function checkUrl(url) {
+			if(url.val().length > 0) {
+				if (!isUrl(url.val())) {
+					url.addClass("ui-state-error");
+					updateTips("The URL entered is invalid.");
+					return false;
+				}
+			}
+			return true;
+	  	}
       
-      $('#settings-dialog').dialog({
-    		autoOpen: false,
-    		modal: true,
-    		width: 450,
-    		buttons: {
-    			"Save": function() {
-    			  var bValid = true;
-            allFields.removeClass( "ui-state-error" );
-            //bValid = bValid && checkBothNotFilled(group, topic);
-            if ( bValid ) {
-  					  $.cookie('groupId', group.val());
-					  if (group.val() != -1) {
-					  	$.cookie('filterName', $('#group option:selected').text());
-					  } else {
-						$.cookie('filterName', null);
-					  }
-  					  //if (topic.val().length > 0) {
-  					  //  $.cookie('topic', topic.val());
-  					  //}
-  						$(this).dialog("close");
-  						retrieveInitialFeed();
-  					} 
-    			}, 
-    			"Cancel": function() { 
-    				$(this).dialog("close"); 
-    			} 
-    		}
+      	$('#settings-dialog').dialog({
+	    		autoOpen: false,
+	    		modal: true,
+	    		width: 450,
+	    		buttons: {
+	    			"Save": function() {
+	    				var bValid = true;
+	            		allFields.removeClass( "ui-state-error" );
+	            		//bValid = bValid && checkBothNotFilled(group, topic);
+						bValid = bValid && checkUrl(logoUrl);
+	            		if ( bValid ) {
+	  					  	$.cookie('groupId', group.val());
+							if (group.val() != -1) {
+								$.cookie('filterName', $('#group option:selected').text());
+							} else {
+								$.cookie('filterName', null);
+							}
+							if (logoUrl.val().length > 0) {
+								$.cookie('logoUrl', logoUrl.val());
+							} else {
+								$.cookie('logoUrl', null);
+							}
+							//if (topic.val().length > 0) {
+							//  $.cookie('topic', topic.val());
+							//}
+							$.cookie('color', color.val());
+	  						$(this).dialog("close");
+	  						retrieveInitialFeed();
+	  					} 
+	    			},
+					"Reset": function() { 
+						group.val(-1);
+						logoUrl.val(null);
+						//topic.val(null);
+						$.farbtastic('#colorpicker').setColor("#0092bc");
+						updateTips("Select your preferences below.");
+	    			},
+	    			"Cancel": function() { 
+	    				$(this).dialog("close"); 
+	    			} 
+	    		}
     	});
     	
+		$('#colorpicker').farbtastic('#color');
     	$('#settings-dialog').removeClass('hidden');
     });
   </script>

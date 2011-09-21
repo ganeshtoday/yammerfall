@@ -56,11 +56,23 @@ function timerHandler() {
 }
 
 function retrieveInitialFeed() {
+	//Reset feed
 	var lastMessageId = 0;
 	$('#feed').html("");
 
+	//Apply settings
 	var groupId = $.cookie('groupId');
 	$('#feed-filter').html($.cookie('filterName'));
+	var color = $.cookie('color');
+	if (color != null) {
+		$('body').css('background-color', color);
+	}
+	var logoUrl = $.cookie('logoUrl');
+	if (logoUrl != null) {
+		$('#header-logo').attr('src', logoUrl);
+	} else {
+		$('#header-logo').attr('src', 'images/Yammerfall_white.png');
+	}
 
 	//var topicId = $.cookie('topicId');
 	if (groupId!=null && isInt(groupId) && groupId !=-1) {
@@ -202,6 +214,15 @@ function isInt(x) {
    var y=parseInt(x); 
    if (isNaN(y)) return false; 
    return x==y && x.toString()==y.toString(); 
+}
+
+function isUrl(str) {
+	var v = new RegExp();
+	v.compile("^[A-Za-z]+://[A-Za-z0-9-_]+\\.[A-Za-z0-9-_%&\?\/.=]+$");
+	if (!v.test(str)) {
+		return false;
+	}
+	return true;
 }
 
 /*function updateTips( t ) {
