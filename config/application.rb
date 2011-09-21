@@ -10,7 +10,7 @@ module Yammerfall
   class Application < Rails::Application
     # Added by the Rails HTML5 Boilerplate Template
     # https://github.com/russfrisch/Rails-HTML5-Boilerplate-Template, written by Russ Frisch
-    config.action_view.javascript_expansions[:defaults] = %w(jquery sessionstorage date rails plugins css3-mediaqueries)
+    config.action_view.javascript_expansions[:defaults] = %w(jquery jquery.cookie date rails plugins css3-mediaqueries)
   
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

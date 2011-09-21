@@ -97,9 +97,9 @@
             allFields.removeClass( "ui-state-error" );
             //bValid = bValid && checkBothNotFilled(group, topic);
             if ( bValid ) {
-  					  sessionStorage.setItem('groupId', group.val());
+  					  $.cookie('groupId', group.val());
   					  //if (topic.val().length > 0) {
-  					  //  sessionStorage.setItem('topic', topic.val());
+  					  //  $.cookie('topic', topic.val());
   					  //}
   						$(this).dialog("close");
   						retrieveInitialFeed();

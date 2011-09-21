@@ -17,6 +17,10 @@ function login(response) {
 	prepareSettingsDialog();
 	
 	$('#settings').click(function() {
+		var groupId = $.cookie('groupId');
+		if (groupId!=null && isInt(groupId)) {
+			$('#group').val(groupId);
+		}
 		$('#settings-dialog').dialog("open");
 	});
 	
@@ -30,8 +34,8 @@ function login(response) {
 function timerHandler() {
 	if ((count % loadDelay)==0) {
 		removeOffscreenMessages();
-		var groupId = sessionStorage.getItem('groupId');
-		//var topicId = sessionStorage.getItem('topicId');
+		var groupId = $.cookie('groupId');
+		//var topicId = $.cookie('topicId');
 		if (groupId!=null && isInt(groupId) && groupId !=-1) {
 			//Load group feed
 			loadMessages('/api/v1/messages/in_group/' + groupId + '?newer_than=' +  lastMessageId);
@@ -55,8 +59,8 @@ function retrieveInitialFeed() {
 	var lastMessageId = 0;
 	$('#feed').html("");
 
-	var groupId = sessionStorage.getItem('groupId');
-	//var topicId = sessionStorage.getItem('topicId');
+	var groupId = $.cookie('groupId');
+	//var topicId = $.cookie('topicId');
 	if (groupId!=null && isInt(groupId) && groupId !=-1) {
 		//Load group feed
 		loadMessages('/api/v1/messages/in_group/' + groupId + '?limit=' +  messageLimit);
@@ -225,5 +229,5 @@ function getOrCreateTopicId(topic) {
 }
 
 function storeTopicId(response) {
-	sessionStorage.setItem('topicId', response.id);
+	$.cookie('topicId', response.id);
 }*/
