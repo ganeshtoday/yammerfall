@@ -143,14 +143,12 @@ body, select, input, textarea {
   color: #444;
   /* Set your base font here, to apply evenly */
   /* font-family: Georgia, serif;  */
-  font-family: 'Cabin', sans-serif;
   background-color: #0092BC;
   /*background: #e6e6e6 url('/images/background_gradient.png') repeat-x left top;*/
 }
 
 /* Headers (h1, h2, etc) have no default font-size or margin; define those yourself */
 h1, h2, h3, h4, h5, h6 { 
-  font-family: 'Cabin', sans-serif;
   font-size: 50px;
 }
 
