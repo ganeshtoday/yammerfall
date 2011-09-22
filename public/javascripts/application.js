@@ -23,7 +23,10 @@ function login(response) {
 		}
 		$('#topic').val($.cookie('topicName'));
 		$('#logoUrl').val($.cookie('logoUrl'));
-		$.farbtastic('#colorpicker').setColor($.cookie('color'));
+		var color = $.cookie('color');
+		if (color!=null) {
+			$.farbtastic('#colorpicker').setColor($.cookie('color'));
+		}
 		$('#settings-dialog').dialog("open");
 	});
 	
