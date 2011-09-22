@@ -62,6 +62,7 @@ function retrieveInitialFeed() {
 
 	//Apply settings
 	var groupId = $.cookie('groupId');
+	//var topicId = $.cookie('topicId');
 	$('#feed-filter').html($.cookie('filterName'));
 	var color = $.cookie('color');
 	if (color != null) {
@@ -74,7 +75,7 @@ function retrieveInitialFeed() {
 		$('#header-logo').attr('src', 'images/Yammerfall_white.png');
 	}
 
-	//var topicId = $.cookie('topicId');
+	
 	if (groupId!=null && isInt(groupId) && groupId !=-1) {
 		//Load group feed
 		loadMessages('/api/v1/messages/in_group/' + groupId + '?limit=' +  messageLimit);
@@ -216,6 +217,7 @@ function isInt(x) {
    return x==y && x.toString()==y.toString(); 
 }
 
+
 function isUrl(str) {
 	var v = new RegExp();
 	v.compile("^[A-Za-z]+://[A-Za-z0-9-_]+\\.[A-Za-z0-9-_%&\?\/.=]+$");
@@ -225,32 +227,19 @@ function isUrl(str) {
 	return true;
 }
 
-/*function updateTips( t ) {
-	tips.text( t ).addClass( "ui-state-highlight" );
-	setTimeout(function() {
-		tips.removeClass( "ui-state-highlight", 1500 );
-	}, 500 );
-}
-
-function checkBothNotFilled(group, topic) {
-	if (group.val()!=-1 && topic.val().length>0) {
-	updateTips("Please select either a group or a topic, but not both.")
-		return false;
-	} else {
-		return true;
-	}
-}
-
-function getOrCreateTopicId(topic) {
+function getOrCreateTopicId(topicName) {
+	debugger;
 	yam.request({
-		url: 'api/v1/topics?name=' + topic.val(),
+		url: 'api/v1/topics',
 		type: 'POST',
-		data: 'name=' + topic.val();
-		success: function (msg) { storeTopicId(msg); },
+		data: 'name=' + topicName,
+		success: function (msg) { storeTopicCookies(msg); },
 		error: function (msg) { error(msg); }
 	});
 }
 
-function storeTopicId(response) {
+function storeTopicCookies(response) {
+	debugger;
+	$.cookie('filterName', response.name);
 	$.cookie('topicId', response.id);
-}*/
+}

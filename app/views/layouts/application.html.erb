@@ -83,22 +83,40 @@
     //Settings dialog code
     $(document).ready(function(){
 		var group = $('#group'),
-		//topic = $('#topic'),
+			//topic = $('#topic'),
 			logoUrl = $('#logoUrl'),
 			color = $('#color'),
 			allFields = $( [] ).add( group )/*.add( topic )*/.add( logoUrl ).add( color ),
 			tips = $('.validateTips');
-
+	
+		function updateTips( t ) {
+			tips.text( t ).addClass( "ui-state-highlight" );
+			setTimeout(function() {
+				tips.removeClass( "ui-state-highlight", 1500 );
+			}, 500 );
+		}
+		
 		function checkUrl(url) {
 			if(url.val().length > 0) {
 				if (!isUrl(url.val())) {
 					url.addClass("ui-state-error");
-					updateTips("The URL entered is invalid.");
+					updateTips("The logo URL entered is invalid.");
 					return false;
 				}
 			}
 			return true;
-	  	}
+		}
+		
+		/*function checkBothNotFilled(group, topic) {
+			if (group.val()!=-1 && topic.val().length>0) {
+				group.addClass("ui-state-error");
+				topic.addClass("ui-state-error");
+				updateTips("Please select either a group or a topic, but not both.")
+				return false;
+			} else {
+				return true;
+			}
+		}*/
       
       	$('#settings-dialog').dialog({
 	    		autoOpen: false,
@@ -122,15 +140,16 @@
 							} else {
 								$.cookie('logoUrl', null);
 							}
-							//if (topic.val().length > 0) {
-							//  $.cookie('topic', topic.val());
-							//}
+							/*if (topic.val().length > 0) {
+							  getOrCreateTopicId(topic.val());
+							}*/
 							$.cookie('color', color.val());
 	  						$(this).dialog("close");
 	  						retrieveInitialFeed();
 	  					} 
 	    			},
 					"Reset": function() { 
+						allFields.removeClass( "ui-state-error" );
 						group.val(-1);
 						logoUrl.val(null);
 						//topic.val(null);
