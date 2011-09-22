@@ -21,6 +21,7 @@ function login(response) {
 		if (groupId!=null && isInt(groupId)) {
 			$('#group').val(groupId);
 		}
+		$('#topic').val($.cookie('topicName'));
 		$('#settings-dialog').dialog("open");
 	});
 	
@@ -28,7 +29,6 @@ function login(response) {
 	retrieveInitialFeed();
 	
 	//Start timer actions timers
-	debugger;
 	setInterval(timerHandler, showDelay);
 }
 
@@ -242,9 +242,9 @@ function getOrCreateTopicId(topicName) {
 }
 
 function storeTopicCookies(response) {
-	debugger;
 	$.cookie('filterName', '#'+response.name);
 	$.cookie('topicId', response.id);
+	$.cookie('topicName', response.name);
 	$('#settings-dialog').dialog("close");
 	retrieveInitialFeed();
 }

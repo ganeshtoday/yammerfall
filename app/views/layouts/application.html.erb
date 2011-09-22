@@ -154,6 +154,7 @@
 							 	getOrCreateTopicId(topic.val());
 							} else {
 								$.cookie('topicId', null);
+								$.cookie('topicName', null);
 								$(this).dialog("close");
 		  						retrieveInitialFeed();
 							}
