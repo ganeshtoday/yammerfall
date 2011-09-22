@@ -28,6 +28,7 @@ function login(response) {
 	retrieveInitialFeed();
 	
 	//Start timer actions timers
+	debugger;
 	setInterval(timerHandler, showDelay);
 }
 
@@ -35,13 +36,13 @@ function timerHandler() {
 	if ((count % loadDelay)==0) {
 		removeOffscreenMessages();
 		var groupId = $.cookie('groupId');
-		//var topicId = $.cookie('topicId');
+		var topicId = $.cookie('topicId');
 		if (groupId!=null && isInt(groupId) && groupId !=-1) {
 			//Load group feed
 			loadMessages('/api/v1/messages/in_group/' + groupId + '?newer_than=' +  lastMessageId);
-		/*} else if (topicId!=null && isInt(topicId)) {
+		} else if (topicId!=null && isInt(topicId)) {
 			//Load topic feed
-			loadMessages('/api/v1/messages/about_topic/' + topicId + '?newer_than=' +  lastMessageId);*/
+			loadMessages('/api/v1/messages/about_topic/' + topicId + '?newer_than=' +  lastMessageId);
 		} else {
 			//Load All Company/Network feed
 			loadMessages('/api/v1/messages?newer_than=' + lastMessageId);
@@ -62,7 +63,7 @@ function retrieveInitialFeed() {
 
 	//Apply settings
 	var groupId = $.cookie('groupId');
-	//var topicId = $.cookie('topicId');
+	var topicId = $.cookie('topicId');
 	$('#feed-filter').html($.cookie('filterName'));
 	var color = $.cookie('color');
 	if (color != null) {
@@ -79,9 +80,9 @@ function retrieveInitialFeed() {
 	if (groupId!=null && isInt(groupId) && groupId !=-1) {
 		//Load group feed
 		loadMessages('/api/v1/messages/in_group/' + groupId + '?limit=' +  messageLimit);
-	/*} else if (topicId!=null && isInt(topicId)) {
+	} else if (topicId!=null && isInt(topicId)) {
 		//Load topic feed
-		loadMessages('/api/v1/messages/about_topic/' + topicId + '?limit=' +  messageLimit);*/
+		loadMessages('/api/v1/messages/about_topic/' + topicId + '?limit=' +  messageLimit);
 	} else {
 		//Load All Company/Network Feed
 		loadMessages('/api/v1/messages?limit=' + messageLimit);
@@ -228,18 +229,22 @@ function isUrl(str) {
 }
 
 function getOrCreateTopicId(topicName) {
-	debugger;
 	yam.request({
-		url: 'api/v1/topics',
+		url: '/api/v1/topics',
 		type: 'POST',
 		data: 'name=' + topicName,
-		success: function (msg) { storeTopicCookies(msg); },
+		success: function (msg) { 
+			storeTopicCookies(msg);
+		},
 		error: function (msg) { error(msg); }
 	});
+	
 }
 
 function storeTopicCookies(response) {
 	debugger;
-	$.cookie('filterName', response.name);
+	$.cookie('filterName', '#'+response.name);
 	$.cookie('topicId', response.id);
+	$('#settings-dialog').dialog("close");
+	retrieveInitialFeed();
 }
