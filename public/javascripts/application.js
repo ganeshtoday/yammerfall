@@ -22,7 +22,7 @@ function login(response) {
 			$('#group').val(groupId);
 		}
 		$('#topic').val($.cookie('topicName'));
-		$('logoUrl').val($.cookie('logoUrl'));
+		$('#logoUrl').val($.cookie('logoUrl'));
 		$.farbtastic('#colorpicker').setColor($.cookie('color'));
 		$('#settings-dialog').dialog("open");
 	});
