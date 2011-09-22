@@ -201,8 +201,9 @@ header ul li a:hover {
 }
 
 #login-button {
-	margin-top: 20px;
-	margin-left: 150px;
+	padding-top: 20px;
+	margin: auto;
+	width: 50%;
 }
 
 /* Feed styles */
