@@ -139,7 +139,7 @@ function parseMessages(response) {
 	
 	for (i in response.messages) {
 		var m = response.messages[i];
-		if (m.sender_id != null) {}
+		if (m.sender_id != null) {
 			m.mugshot_url = users[m.sender_id].mugshot_url;
 			m.full_name = users[m.sender_id].full_name;
 		}
