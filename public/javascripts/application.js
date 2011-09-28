@@ -139,8 +139,10 @@ function parseMessages(response) {
 	
 	for (i in response.messages) {
 		var m = response.messages[i];
-		m.mugshot_url = users[m.sender_id].mugshot_url;
-		m.full_name = users[m.sender_id].full_name;
+		if (m.sender_id != null) {}
+			m.mugshot_url = users[m.sender_id].mugshot_url;
+			m.full_name = users[m.sender_id].full_name;
+		}
 		if(m.body.plain.length > 250) {
 			m.body.plain = m.body.plain.substring(0, 400) + "...";
 		}
@@ -159,8 +161,10 @@ function parseMessages(response) {
 			//m.liked_by_text = m.liked_by_text.substring(0, m.liked_by_text.length-2);
 		}*/
 		if (m.replied_to_id != null) {
-			in_reply_to = users[ref_msgs[m.replied_to_id].sender_id];
-			m.in_reply_to = in_reply_to.full_name;
+			if (ref_msgs[m.replied_to_id].sender_id != null) {
+				in_reply_to = users[ref_msgs[m.replied_to_id].sender_id];
+				m.in_reply_to = in_reply_to.full_name;
+			}
 		}
 	}
 	return response.messages;
