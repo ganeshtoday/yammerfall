@@ -3,7 +3,7 @@
   <div class="yam" style="display:none" >
     
     <div class="userimg">
-      <img src="${mugshot_url}" height="60" width="60"/>
+      <img src="${mugshot_url}" height="90" width="90"/>
     </div>
     
     <div class="content">
@@ -17,7 +17,7 @@
   		
 		
     	<div class="message">
-  			${body.plain}
+        <span class="messagebody">{{html body.rich}}</span>
   			{{if attachments}}
   			  <div class="attachments">
   				{{each(index, attachment) attachments}}
@@ -31,7 +31,7 @@
 		
 		  <div class="metadata">
     		<span class="creationdate unformatted">${created_at}</span>
-    		<span class="messageinfo"> from ${client_type}</span>
+    		<!--<span class="messageinfo"> from ${client_type}</span>-->
     	</div>
 		
 		  <!--{{if liked_by.count}}

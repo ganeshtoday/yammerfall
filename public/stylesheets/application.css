@@ -79,7 +79,7 @@ a:link { -webkit-tap-highlight-color: #FF5E99; }
 /* Accessible focus treatment: people.opera.com/patrickl/experiments/keyboard/test */
 a:hover, a:active { outline: none; }
 
-a, a:active, a:visited { color: #607890; }
+a, a:active, a:visited { color: #01317E; text-decoration: none; }
 a:hover { color: #036; }
 
 ul, ol { margin-left: 2em; }
@@ -216,7 +216,7 @@ div.yam {
 	-moz-border-radius: 6px;
 	border-radius: 6px;
 	background-color: #fff;
-	font-size: 160%;
+	font-size: 180%;
 	color: #333;
 	margin: 15px;
 	position: relative;
@@ -231,16 +231,16 @@ div.userimg {
 }
 
 div.content {
-	min-height: 70px;
-	padding-left: 80px;
+	min-height: 100px;
+	padding-left: 110px;
 	padding-top: 5px;
 	padding-bottom: 5px;
 	padding-right: 5px;
 }
 
 div.sender {
-	margin-bottom: 5px;
-	font-size: 80%;
+	margin-bottom: 10px;
+	font-size: 70%;
 	color: #6699CC;
 	font-weight: bold;
 }
@@ -255,16 +255,16 @@ img.attachment {
 }
 
 div.metadata {
-	margin-top: 5px;
+	margin-top: 0px;
 }
 
 span.creationdate {
-	font-size: 80%;
+	font-size: 70%;
 	color: #999999;
 }
 
 span.messageinfo {
-	font-size: 80%;
+	font-size: 70%;
 	color: #999999;
 }
 

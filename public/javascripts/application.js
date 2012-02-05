@@ -67,6 +67,7 @@ function retrieveInitialFeed() {
 	$('#feed').html("");
 
 	//Apply settings
+	var networkUrl = $.cookie('networkUrl');
 	var groupId = $.cookie('groupId');
 	var topicId = $.cookie('topicId');
 	$('#feed-filter').html($.cookie('filterName'));
@@ -116,6 +117,9 @@ function prependMessages(response) {
 			}
 		}).prependTo('#feed');
 
+		//Truncate HTML
+		$('.messagebody').truncate({max_length: 275});
+
 		formatCreationDates();
 		
 		//Store lastMessageId
@@ -143,9 +147,19 @@ function parseMessages(response) {
 			m.mugshot_url = users[m.sender_id].mugshot_url;
 			m.full_name = users[m.sender_id].full_name;
 		}
-		if(m.body.plain.length > 250) {
-			m.body.plain = m.body.plain.substring(0, 400) + "...";
+		if (m.body.rich.indexOf('(See attached') === 0) {
+			for (j in m.attachments) {
+				var a = m.attachments[j];
+				if (a.ymodule) {
+					m.body.rich = a.name;
+				}
+			}
+			
 		}
+		m.body.rich = m.body.rich.replace(/br><br/g, "br");
+		/*if (m.body.rich.length > 250) {
+			m.body.rich = m.body.rich.substring(0, 400) + "...";
+		}*/
 		/*m.liked_by_text = "";
 		if (m.liked_by.count > 0) {
 			for (j in m.liked_by.names) {
@@ -161,9 +175,13 @@ function parseMessages(response) {
 			//m.liked_by_text = m.liked_by_text.substring(0, m.liked_by_text.length-2);
 		}*/
 		if (m.replied_to_id != null) {
-			if (ref_msgs[m.replied_to_id].sender_id != null) {
-				in_reply_to = users[ref_msgs[m.replied_to_id].sender_id];
-				m.in_reply_to = in_reply_to.full_name;
+			if (ref_msgs[m.replied_to_id] != null) {
+				if (ref_msgs[m.replied_to_id].sender_id != null) {
+					in_reply_to = users[ref_msgs[m.replied_to_id].sender_id];
+					m.in_reply_to = in_reply_to.full_name;
+				}
+			} else {
+				m.replied_to_id = null;
 			}
 		}
 	}
@@ -204,16 +222,31 @@ function formatCreationDates() {
 
 //Settings dialog methods
 function prepareSettingsDialog() {
+	//Load network options
+	yam.request({
+		url: '/api/v1/networks/current',
+		type: 'GET',
+		success: function (msg) { $('#network').addNetworks(msg); },
+		error: function (msg) { error(msg); }
+	});
+
 	//Load group options
 	yam.request({
 		url: '/api/v1/groups?mine=1',
 		type: 'GET',
-		success: function (msg) { $('#group').addItems(msg); },
+		success: function (msg) { $('#group').addGroups(msg); },
 		error: function (msg) { error(msg); }
 	});
 }
 
-$.fn.addItems = function(data) {
+$.fn.addNetworks = function(data) {
+	var list = this[0];
+	$.each(data, function(index, itemData) {
+		list.options.add(new Option(itemData.name, itemData.url));
+	});
+};
+
+$.fn.addGroups = function(data) {
 	var list = this[0];
 	list.options.add(new Option("All Conversations", -1));
 	$.each(data, function(index, itemData) {
