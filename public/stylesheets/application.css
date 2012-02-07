@@ -291,10 +291,10 @@ div.likedby .smiley{
 #settings-dialog input.text { margin-bottom:12px; padding: .4em; }
 #settings-dialog fieldset { padding: 0.3em; border:0; margin-top:25px; }
 .ui-dialog .ui-state-error { padding: 0.3em; }
-#settings-dialog #colorpicker { padding-left: 30px; }
+#settings-dialog #colorpicker { margin-left: 67px; }
 #settings-dialog #logoUrl {width: 290px; padding-top: 5px; }
 #settings-dialog #topic {width: 290px; padding-top: 5px; }
-#settings-dialog .instructions {margin-left: 53px; font-size: 75%; }
+#settings-dialog .instructions {margin-left: 56px; font-size: 80%; }
 		
 
 
