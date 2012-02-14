@@ -87,15 +87,21 @@
     var messageLimit = 10;
     var lastMessageId = 0;
     var count = 3000;
+  	var accessTokens = {};
+  	var oauth = {};
     
     yam.getLoginStatus( function (response) {
       if (response.authResponse) {     
-        login();
+        login(response);
       } else {
 		$('#landing').removeClass('hidden');
         yam.connect.loginButton('#yammer-login', function (response) {
           if (response.access_token) {
-            login();
+            yam.getLoginStatus( function (response) {
+            	if (response.authResponse) {
+            		login(response);
+            	}
+            });
           }
         });
       }   
@@ -103,11 +109,12 @@
     
     //Settings dialog code
     $(document).ready(function(){
-		var group = $('#group'),
+		var network = $('#network'),
+			group = $('#group'),
 			topic = $('#topic'),
 			logoUrl = $('#logoUrl'),
 			color = $('#color'),
-			allFields = $( [] ).add( group ).add( topic ).add( logoUrl ).add( color ),
+			allFields = $( [] ).add( network ).add( group ).add( topic ).add( logoUrl ).add( color ),
 			tips = $('.validateTips');
 	
 		function updateTips( t ) {
@@ -142,7 +149,8 @@
       	$('#settings-dialog').dialog({
 	    		autoOpen: false,
 	    		modal: true,
-	    		width: 450,
+	    		width: 400,
+	    		resizable: false,
 	    		buttons: {
 	    			"Save": function() {
 	    				var bValid = true;
@@ -150,6 +158,7 @@
 	            		bValid = bValid && checkBothNotFilled(group, topic);
 						bValid = bValid && checkUrl(logoUrl);
 	            		if ( bValid ) {
+	            			$.cookie('networkPermalink', network.val());
 	  					  	$.cookie('groupId', group.val());
 							if (group.val() != -1) {
 								$.cookie('filterName', $('#group option:selected').text());
@@ -162,11 +171,15 @@
 								$.cookie('logoUrl', null);
 							}
 							$.cookie('color', color.val());
-							if (group.val()==-1 && topic.val().length==0) {
+							if (group.val()==-1 && (topic.val().length==0||topic.val()=="#")) {
 								$.cookie('filterName', null);
 							}
-							if (topic.val().length > 0) {
-							 	getOrCreateTopicId(topic.val());
+							if (topic.val().length>0 && topic.val()!="#") {
+								var topicText = topic.val().replace(/_/g, " ");
+								if (topicText.indexOf("#") == 0) {
+									topicText = topicText.substring(1);
+								}
+							 	getOrCreateTopicId(topicText);
 							} else {
 								$.cookie('topicId', null);
 								$.cookie('topicName', null);
@@ -177,6 +190,8 @@
 	    			},
 					"Reset": function() { 
 						allFields.removeClass( "ui-state-error" );
+						network.val($.cookie('networkPermalink'));
+						oauth.setAuthToken(accessTokens[$.cookie('networkPermalink')]);
 						group.val(-1);
 						logoUrl.val(null);
 						topic.val(null);
@@ -184,6 +199,7 @@
 						updateTips("Select a group feed or topic feed, or apply a custom look.");
 	    			},
 	    			"Cancel": function() { 
+	    				oauth.setAuthToken(accessTokens[$.cookie('networkPermalink')]);
 	    				$(this).dialog("close"); 
 	    			} 
 	    		}

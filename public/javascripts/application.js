@@ -13,10 +13,30 @@ function login(response) {
 	$('#logout').click( function() {
 		yam.logout(function(response) { location.reload(); });
 	});
-	
-	prepareSettingsDialog();
+
+	// Initialize network token if no cookie
+	var networkPermalink = $.cookie('networkPermalink');
+	if (networkPermalink == null) {
+		networkPermalink = response.network.permalink;
+		$.cookie('networkPermalink', networkPermalink);
+		$.cookie('group', null);
+		$.cookie('filterName', null);
+		$.cookie('topicId', null);
+		$.cookie('topicName', null);
+	}
+
+	loadTokens();
+
+	//Set the OAuth 2 access token
+	oauth = yam.request.getAuthenticator();
+	oauth.setAuthToken(accessTokens[networkPermalink]);
+
+	loadNetworks();
+	loadGroups();
 	
 	$('#settings').click(function() {
+		$('#network').val($.cookie('networkPermalink'));
+
 		var groupId = $.cookie('groupId');
 		if (groupId!=null && isInt(groupId)) {
 			$('#group').val(groupId);
@@ -28,6 +48,11 @@ function login(response) {
 			$.farbtastic('#colorpicker').setColor($.cookie('color'));
 		}
 		$('#settings-dialog').dialog("open");
+	});
+
+	$('#network').bind('change', function() {
+		oauth.setAuthToken(accessTokens[$('#network').val()]);
+		loadGroups();
 	});
 	
 	//Retrieve feed
@@ -61,13 +86,27 @@ function timerHandler() {
 	}
 }
 
+function loadTokens() {
+	yam.request({
+		url: '/api/v1/oauth/tokens',
+		type: 'GET',
+		success: function (msg) { 
+			$.each(msg, function(index, item) {
+			if (accessTokens[item.network_permalink] == null) {
+				accessTokens[item.network_permalink] = item;
+				}
+			});
+		},
+		error: function (msg) { error(msg); }
+	});
+}
+
 function retrieveInitialFeed() {
 	//Reset feed
 	var lastMessageId = 0;
 	$('#feed').html("");
 
 	//Apply settings
-	var networkUrl = $.cookie('networkUrl');
 	var groupId = $.cookie('groupId');
 	var topicId = $.cookie('topicId');
 	$('#feed-filter').html($.cookie('filterName'));
@@ -96,6 +135,7 @@ function retrieveInitialFeed() {
 }
 
 function loadMessages(apiUrl) {
+	apiUrl = apiUrl;
 	yam.request({
 		url: apiUrl,
 		type: 'GET',
@@ -189,7 +229,7 @@ function parseMessages(response) {
 }
 
 function error(msg) {
-	//alert(msg);
+	alert("An error has occurred: " + msg.responseText);
 }
 
 function removeOffscreenMessages(){
@@ -221,7 +261,7 @@ function formatCreationDates() {
 }
 
 //Settings dialog methods
-function prepareSettingsDialog() {
+function loadNetworks() {
 	//Load network options
 	yam.request({
 		url: '/api/v1/networks/current',
@@ -229,28 +269,30 @@ function prepareSettingsDialog() {
 		success: function (msg) { $('#network').addNetworks(msg); },
 		error: function (msg) { error(msg); }
 	});
+}
 
+function loadGroups() {
 	//Load group options
 	yam.request({
 		url: '/api/v1/groups?mine=1',
 		type: 'GET',
-		success: function (msg) { $('#group').addGroups(msg); },
+		success: function (msg) { $('#group').empty(); $('#group').addGroups(msg); },
 		error: function (msg) { error(msg); }
 	});
 }
 
 $.fn.addNetworks = function(data) {
 	var list = this[0];
-	$.each(data, function(index, itemData) {
-		list.options.add(new Option(itemData.name, itemData.url));
+	$.each(data, function(index, item) {
+		list.options.add(new Option(item.name, item.permalink));
 	});
 };
 
 $.fn.addGroups = function(data) {
 	var list = this[0];
 	list.options.add(new Option("All Conversations", -1));
-	$.each(data, function(index, itemData) {
-		list.options.add(new Option(itemData.full_name, itemData.id));
+	$.each(data, function(index, item) {
+		list.options.add(new Option(item.full_name, item.id));
 	});
 };
 
