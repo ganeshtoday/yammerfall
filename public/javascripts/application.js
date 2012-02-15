@@ -229,7 +229,7 @@ function parseMessages(response) {
 }
 
 function error(msg) {
-	alert("An error has occurred: " + msg.responseText);
+	//alert("An error has occurred: " + msg.responseText);
 }
 
 function removeOffscreenMessages(){
