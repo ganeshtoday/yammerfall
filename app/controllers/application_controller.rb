@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   APP_DOMAIN = 'www.yammerfall.com'
 
   def ensure_domain
-    if request.env['HTTP_HOST'] != APP_DOMAIN
+    if (request.env['HTTP_HOST']!=APP_DOMAIN || request.env['HTTPS']!='on')
       # HTTP 301 is a "permanent" redirect
       redirect_to "https://#{APP_DOMAIN}", :status => 301
     end
