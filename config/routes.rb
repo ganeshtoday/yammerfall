@@ -1,5 +1,9 @@
 Yammerfall::Application.routes.draw do
 
+  # beginning of routes.rb 
+  match "*path" => redirect("https://www.yammerfall.com/%{path}"), :constraints => { :protocol => "http://" }
+  match "*path" => redirect("https://www.yammerfall.com/%{path}"), :constraints => { :subdomain => "" }
+
   root :to => "pages#home"
   
   # The priority is based upon order of creation:
