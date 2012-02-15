@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  force_ssl
+  include ::SslRequirement
+
+  ssl_exceptions
 
   before_filter :ensure_domain
 
