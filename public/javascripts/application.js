@@ -184,7 +184,7 @@ function parseMessages(response) {
 	for (i in response.messages) {
 		var m = response.messages[i];
 		if (m.sender_id != null) {
-			m.mugshot_url = users[m.sender_id].mugshot_url;
+			m.mugshot_url = users[m.sender_id].mugshot_url.replace('48x48', '96x96');
 			m.full_name = users[m.sender_id].full_name;
 		}
 		if (m.body.rich.indexOf('(See attached') === 0) {
