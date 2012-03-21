@@ -223,16 +223,16 @@ div.yam {
 }
 
 div.userimg {
-	height: 100px;
+	height: 106px;
 	left: 0;
  	position: absolute;
 	padding: 10px;
-	width: 100px;
+	width: 106px;
 }
 
 div.content {
-	min-height: 100px;
-	padding-left: 110px;
+	min-height: 106px;
+	padding-left: 116px;
 	padding-top: 5px;
 	padding-bottom: 5px;
 	padding-right: 5px;
