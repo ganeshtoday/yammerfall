@@ -4,3 +4,5 @@ It is deployed at yammerfall.com
 
 Yammerfall is primarily an HTML5 app making significant use of jQuery. It is packaged as a Rails application for
 easy deployment on PaaS services such as Heroku.
+
+This content is released under the MIT License: http://opensource.org/licenses/MIT
